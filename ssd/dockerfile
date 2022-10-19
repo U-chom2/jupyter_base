@@ -1,0 +1,64 @@
+FROM ubuntu:20.04
+
+USER root
+
+LABEL version="1.0.0"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# サーバー変更
+RUN sed -i 's@archive.ubuntu.com@ftp.jaist.ac.jp/pub/Linux@g' /etc/apt/sources.list
+
+# インストール関連
+RUN apt update && \
+    apt install -y --no-install-recommends build-essential wget
+RUN apt -y install neovim zsh git python3-pip
+RUN python3 -m pip install --upgrade pip \
+	&&  pip install --no-cache-dir \
+		black \
+		jupyterlab \
+		jupyterlab_code_formatter \
+		jupyterlab-git \
+		lckr-jupyterlab-variableinspector \
+		jupyterlab_widgets \
+		ipywidgets \
+		import-ipynb \
+        numpy \
+        pandas \
+        scipy \
+        sklearn \
+        tensorflow-gpu==2.9.* \
+        torch \
+        # pytorch-lightning==1.2.7 \
+        pytorch-lightning==1.6.1 \
+        python-crfsuite \
+        # transformers==4.5.0 \
+        transformers==4.18.0 \
+        fugashi==1.1.0 \
+        ipadic==1.0.0 \
+        tqdm \ 
+        sudachipy \
+        sudachidict_core
+
+RUN chsh -s /usr/bin/zsh
+
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+RUN git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+
+# 作業用ディレクトリの作成
+RUN mkdir Workspace
+
+# aliasの設定
+RUN echo "alias python='python3'" >> /root/.zshrc
+RUN echo "alias vim='nvim'" >> /root/.zshrc
+RUN echo "alias pip='pip3'" >> /root/.zshrc
+
+# プロンプトの変更
+# RUN echo 'export PS1="\e[0;32m> \e[0;35m[docker] \e[0;34m%~ \e[m\$ "' >> /root/.zshrc
+
+# ホームディレクトリをWorkspaceに変更
+WORKDIR /Workspace
+
+# CMD bash
+EXPOSE 8888
