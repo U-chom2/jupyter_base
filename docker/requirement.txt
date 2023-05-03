@@ -1,0 +1,43 @@
+# jupyter-lab
+black
+jupyterlab
+jupyterlab_widgets
+jupyterlab_code_formatter
+jupyterlab-spreadsheet-editor
+ipywidgets
+import-ipynb
+japanize-matplotlib
+
+# basic
+setuptools
+wheel
+tqdm
+numpy
+pandas
+matplotlib
+seaborn
+openpyxl
+
+# Deep Learning
+scikit-learn
+torch
+torchsummary
+pytorch-lightning
+
+# NLP
+sudachipy
+sudachidict_core
+gensim
+pyLDAvis
+wordcloud
+transformers
+
+# **** CUDAのバージョンによって変更 ****
+cupy-cuda11x
+spacy[cuda11x, transformers,lookups,ja]
+# **** CUDAのバージョンによって変更 ****
+
+ginza
+ja_ginza
+ja_ginza_electra
+https://github.com/megagonlabs/ginza/releases/download/latest/ja_ginza_electra-latest-with-model.tar.gz

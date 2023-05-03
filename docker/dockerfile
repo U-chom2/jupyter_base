@@ -1,0 +1,29 @@
+# 機種によってCUDAのバージョンをあわせてください
+FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
+
+# USER root
+LABEL version="1.0.0"
+
+ENV DEBIAN_FRONTEND=noninteractive
+# サーバー変更
+
+RUN sed -i 's@archive.ubuntu.com@ftp.jaist.ac.jp/pub/Linux@g' /etc/apt/sources.list
+
+# インストール関連
+RUN apt update && \
+    apt install -y --no-install-recommends build-essential wget \
+    && apt -y install python3-pip
+
+# Pythonライブラリのインストール
+# COPY requirements.txt .
+
+RUN python3 -m pip install --upgrade pip 
+    # && python3 -m pip install --no-cache-dir -U -r requirements.txt \
+    # && python3 -m spacy validate
+
+# 作業用ディレクトリの作成
+RUN mkdir Workspace
+
+# ホームディレクトリをWorkspaceに変更
+WORKDIR /workspace
+EXPOSE 8888

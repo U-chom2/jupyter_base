@@ -1,29 +1,30 @@
 version: '3.9'
 services:
     jupyter:
+        container_name: SalesDataScience
         build:
-            context: ./ssd
-            dockerfile: dockerfile
+            context: ./docker
+            dockerfile: Dockerfile
         deploy:
             resources:
                 reservations:
                     devices:
                         - capabilities: [gpu]
-        environment: 
+        environment:
             - NVIDIA_VISIBLE_DEVICES=all
             - NVIDIA_DRIVER_CAPABILITIES=all
+            - JUPYTER_ENABLE_LAB=yes
         entrypoint: >
             jupyter-lab
-            --allow-root
-            --ip=0.0.0.0
-            --port=8888
-            --no-browser
-            --NotebookApp.token=''
-            --notebook-dir=/Workspace
-        volumes:
-            - ./ssd/Share:/Workspace
+                --allow-root
+                --ip=0.0.0.0
+                --port=8888
+                --no-browser
+                --NotebookApp.token='TOKEN'
+                --notebook-dir=/workspace
+        volumes: 
+            - .:/workspace
             - ./py3/root_jupyter:/root/.jupyter
         ports:
-            - "127.0.0.1:8888:8888"
+            - 8888:8888
         tty: true
-        # stdin_open: true
